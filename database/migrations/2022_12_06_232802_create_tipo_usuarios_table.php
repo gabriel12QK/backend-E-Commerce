@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('tipo_usuarios', function (Blueprint $table) {
             $table->id();
             $table->string('tipo_usuario');
-            $table->boolean('estado');
+            $table->boolean('estado')->default(true);
         });
     }
 

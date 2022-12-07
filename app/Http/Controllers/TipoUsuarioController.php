@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\tipo_usuario;
 use Illuminate\Http\Request;
 
+
 class TipoUsuarioController extends Controller
 {
     /**
