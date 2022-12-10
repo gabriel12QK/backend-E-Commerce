@@ -70,9 +70,13 @@ class ProductoController extends Controller
      * @param  \App\Models\producto  $producto
      * @return \Illuminate\Http\Response
      */
-    public function show(producto $producto)
+    public function show($id)
     {
-        //
+        $producto= producto::find($id);
+        if (is_null($producto)) {
+            return response()->json(['message'=> "Producto no encontrado"],404);
+        }
+        return response()->json($producto,200);
     }
 
     /**
@@ -83,7 +87,10 @@ class ProductoController extends Controller
      */
     public function edit(producto $producto)
     {
-        //
+        
+        
+
+
     }
 
     /**
@@ -93,9 +100,31 @@ class ProductoController extends Controller
      * @param  \App\Models\producto  $producto
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, producto $producto)
+    public function update(Request $request, $id)
     {
-        //
+        $producto= producto::find($id);
+        if (is_null($producto)) {
+           return response()->json(['message'=> 'Producto no encontrado'], 404);
+        }
+        $valiData=$request->validate([
+            'nombre'=>'required|string|max:255',
+            'precio'=>'required|max:255',
+            'peso'=>'required|max:255',
+            'stock'=>'required|integer',
+            //'imagen'=>'required|mimes:jpeg,bmp,png',
+            'id_categoria'=>'required',
+            'id_marca'=>'required',
+            'id_tipo_peso'=>'required',
+        ]);
+        $producto->nombre=$validateData['nombre'];
+        $producto->precio=$validateData['precio'];
+        $producto->peso=$validateData['peso'];
+        $producto->stock=$validateData['stock'];
+        $producto->id_categoria=$validateData['id_categoria'];
+        $producto->id_marca=$validateData['id_marca'];
+        $producto->id_tipo_peso=$validateData['id_tipo_peso'];
+        $producto->save();
+        return response()->json(['message'=>"Producto actualizado",200]);
     }
 
     /**
@@ -104,8 +133,59 @@ class ProductoController extends Controller
      * @param  \App\Models\producto  $producto
      * @return \Illuminate\Http\Response
      */
-    public function destroy(producto $producto)
+    public function destroy($id)
     {
-        //
+        $producto= producto::find($id);
+        if (is_null($producto)) {
+           return response()->json(['message'=> 'Producto no encontrado'], 404);
+        }
+        $producto->estado=0;
+        $producto->save();
+        return response()->json(['message' => 'Estado actualizado'], 201);
+
+    }
+
+    public function editImagen(Request $request, $id)
+    {
+        $producto= producto::find($id);
+        if (is_null($producto)) {
+           return response()->json(['message'=> 'Producto no encontrado'], 404);
+        }
+        $validateData = $request->validate([
+            'imagen' => 'required|mimes:jpeg,bmp,png',
+        ]);
+        $img=$request->file('imagen');
+        $validateData['imagen'] = time().'.'.$img->getClientOriginalExtension();
+        $request->file('imagen')->storeAs("public/images/producto/{$producto->id}", $validateData['imagen']);
+        $producto->imagen=$validateData['imagen'];
+        $producto->save();
+        return response()->json(['message' => 'Foto actualizada'], 201);
+    }
+    public function editPrecio(Request $request, $id)
+    {
+        $producto= producto::find($id);
+        if (is_null($producto)) {
+           return response()->json(['message'=> 'Producto no encontrado'], 404);
+        }
+        $validateData = $request->validate([
+            'precio' => 'required',
+        ]);
+        $producto->precio = $validateData['precio'];
+        $producto->save();
+        return response()->json(['message' => 'Precio actualizado'], 201);
+    }
+
+    public function editStock(Request $request, $id)
+    {
+        $producto= producto::find($id);
+        if (is_null($producto)) {
+           return response()->json(['message'=> 'Producto no encontrado'], 404);
+        }
+        $validateData = $request->validate([
+            'stock' => 'required',
+        ]);
+        $producto->stock = $validateData['stock'];
+        $producto->save();
+        return response()->json(['message' => 'Stock actualizado'], 201);
     }
 }
