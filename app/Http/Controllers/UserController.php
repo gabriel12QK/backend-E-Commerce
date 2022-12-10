@@ -111,5 +111,16 @@ class UserController extends Controller
         return response()->json(['message' => 'Contraseña actualizada'], 201);
     }
 
+    public function destroy($id)
+    {
+        $user = User::find($id);
+        if (is_null($user)) {
+            return response()->json(['message' => 'usuario no encontrado'], 404);
+        }
+        $user->state =false;
+        $user->save();
+        return response()->json(['message' => 'eliminado'], 200);
+    }
+
    
 }
