@@ -15,6 +15,7 @@ class UserController extends Controller
         $user = User::all();
         return response()->json($user, 200);
     }
+
     public function register(Request $request)
     {
        // return response()->json($request);
@@ -28,9 +29,9 @@ class UserController extends Controller
         'email' => 'required|string|email|max:255|unique:users',
         'password' => 'required|string|min:8',
         'imagen'=>'required'
-    ]);
+        ]);
         $type=3;
-    $user = User::create([
+         $user = User::create([
         'name' => $validData['name'],
         'last_name' => $validData['last_name'],
         'email' => $validData['email'],
@@ -42,16 +43,73 @@ class UserController extends Controller
         'imagen' => $validData['imagen'],
         'estado' => 1,
         'id_tipo_usuario' => $type,
-    ]);
+        ]);
 
-    //imagen
-    $img=$request->file('imagen');
-    $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
+     //imagen
+         $img=$request->file('imagen');
+        $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
 
  
-    $request->file('imagen')->storeAs("public/images/persona/{$user->id}", $validData['imagen']);
+         $request->file('imagen')->storeAs("public/images/persona/{$user->id}", $validData['imagen']);
 
-    return response()->json(['message' => 'Usuario registrado'], 200);
+         return response()->json(['message' => 'Usuario registrado'], 200);
     }
+
+    public function login(Request $request)
+    {
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            return response()->json(['message' => 'Credenciales invalidas'], 401);
+        }
+        $user = User::where('email', $request->email)->first();
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+        $query = DB::table('users')
+            ->join('tipo_usuarios', 'users.id_tipo_usuario', '=', 'tipo_usuarios.id')
+            ->select('users.*', 'tipo_usuarios.*')
+            ->where('users.email', $user->email)
+            ->get();
+        return response()->json(
+            [
+                'accesToken'=>$token,
+                'tokenType'=>'Bearer',
+                'typeUserId'=>$user->id_tipo_usuario,
+                'id'=>$user->id,
+                'userName'=>$user->name,
+                'email'=>$user->email,
+                'rol'=>$query[0]->tipo_usuario,
+            ],
+            200
+
+        );
+    }
+
+    public function editUserEmail(Request $request, $id)
+    {
+        $user = User::find($id);
+        if (is_null($user)) {
+            return response()->json(['message' => 'usuario no encontrado'], 404);
+        }
+        $validateData = $request->validate([
+            'email' => 'required|email|max:50|unique:users',
+        ]);
+        $user->email = $validateData['email'];
+        $user->save();
+        return response()->json(['message' => 'actualizado'], 201);
+    }
+    
+    public function editPassword(Request $request, $id){
+        $user = User::find($id);
+        if(is_null($user)){
+            return response()->json(['message' => 'usuario no encontrado'], 404);
+        }
+        $validateData = $request->validate([
+            'password' => 'required|string|max:50|unique:users',
+        ]);
+        $validateData['password'] = Hash::make($validateData['password']);
+        $user->password = $validateData['password'];
+        $user->save();
+        return response()->json(['message' => 'Contraseña actualizada'], 201);
+    }
+
    
 }

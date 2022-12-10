@@ -35,7 +35,33 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $valiData=$request->validate([
+            'nombre'=>'required|string|max:255',
+            'precio'=>'required|max:255',
+            'peso'=>'required|max:255',
+            'stock'=>'required|integer',
+            'imagen'=>'required|mimes:jpeg,bmp,png',
+            'id_categoria'=>'required',
+            'id_marca'=>'required',
+            'id_tipo_peso'=>'required',
+        ]);
+        $producto=producto::create([
+            'nombre'=>$valiData['nombre'],
+            'precio'=>$valiData['precio'],
+            'peso'=>$valiData['peso'],
+            'stock'=>$valiData['stock'],
+            'imagen'=>$valiData['imagen'],
+            'id_categoria'=>$valiData['id_categoria'],
+            'id_marca'=>$valiData['id_marca'],
+            'estado'=>1,
+            'id_tipo_peso'=>$valiData['id_tipo_peso'],
+        ]);
+        $img=$request->file('imagen');
+        $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
+
+ 
+        $request->file('imagen')->storeAs("public/images/producto/{$producto->id}", $validData['imagen']);
+        return response()->json(['message'=>'Producto registrado'],200);
     }
 
     /**

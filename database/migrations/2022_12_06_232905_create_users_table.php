@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('cedula');
             $table->string('referencia');
             $table->string('direccion');
-            $table->string('imagen');
+            $table->string('imagen')->nullable();
             $table->string('telefono');
             $table->boolean('estado');
             $table->foreignId('id_tipo_usuario')->constrained('tipo_usuarios');

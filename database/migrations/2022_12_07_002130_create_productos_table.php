@@ -20,7 +20,7 @@ return new class extends Migration
             $table->decimal('peso', 10, 2)->default(0);
             $table->integer('stock')->default(0);
             $table->string('imagen');
-            $table->boolean('estado');
+            $table->boolean('estado')->default(1);
             $table->foreignId('id_categoria')->constrained('categorias');
             $table->foreignId('id_marca')->constrained('marcas');
             $table->foreignId('id_tipo_peso')->constrained('tipo_pesos');
