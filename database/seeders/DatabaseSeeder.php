@@ -17,7 +17,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             TipoPesos::class,
             TipoUsuarios::class,
-            Usuario::class
+            Usuario::class,
+            Marcas::class,
+            Categorias::class,
         ]);
     }
 }

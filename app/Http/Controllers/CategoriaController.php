@@ -14,7 +14,8 @@ class CategoriaController extends Controller
      */
     public function index()
     {
-        //
+        $categoria = categoria::where('estado',1)->get();
+        return response()->json($categoria, 200);
     }
 
     /**
@@ -35,7 +36,13 @@ class CategoriaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validateData=$request->validate([
+            'descripcion'=>'required|string|max:255'
+        ]);
+        $categoria=categoria::create([
+            'descripcion'=>$validateData['descripcion'],
+            'estado'=>1,
+        ]);
     }
 
     /**
@@ -44,9 +51,13 @@ class CategoriaController extends Controller
      * @param  \App\Models\categoria  $categoria
      * @return \Illuminate\Http\Response
      */
-    public function show(categoria $categoria)
+    public function show($id)
     {
-        //
+        $categoria=categoria::find($id);
+        if (is_null($categoria)) {
+            return response()->json(['message' => 'Categoria no encontrada'], 404);
+        }
+        return response()->json($categoria);
     }
 
     /**
@@ -78,8 +89,14 @@ class CategoriaController extends Controller
      * @param  \App\Models\categoria  $categoria
      * @return \Illuminate\Http\Response
      */
-    public function destroy(categoria $categoria)
+    public function destroy($id)
     {
-        //
+        $categoria=categoria::find($id);
+        if (is_null($categoria)) {
+            return response()->json(['message' => 'Categoria no encontrada'], 404);
+        }
+        $categoria->estado=false;
+        $categoria->save();
+        return response()->json(['message'=>'Categoria eliminada']);
     }
 }

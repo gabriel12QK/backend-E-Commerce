@@ -14,7 +14,8 @@ class PromocionProductoController extends Controller
      */
     public function index()
     {
-        //
+        $promocion=promocion_producto::where('estado',1)->get();
+        return response()->json($promocion);
     }
 
     /**
@@ -35,7 +36,22 @@ class PromocionProductoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validateData=$request->validate([
+            'stock'=>'required',
+            'descuento'=>'required',
+            'fecha_inicio'=>'required',
+            'fecha_fin'=>'required',
+            'id_producto'=>'required'
+        ]);
+        $promocion=promocion_producto::create([
+            'stock'=>$validateData['stock'],
+            'descuento'=>$validateData['descuento'],
+            'fecha_inicio'=>$validateData['fecha_inicio'],
+            'fecha_fin'=>$validateData['fecha_fin'],
+            'id_producto'=>$validateData['id_producto'],
+            'estado'=>1,
+        ]);
+        return response()->json(['message'=>'Promocion registrada']);
     }
 
     /**
@@ -44,9 +60,13 @@ class PromocionProductoController extends Controller
      * @param  \App\Models\promocion_producto  $promocion_producto
      * @return \Illuminate\Http\Response
      */
-    public function show(promocion_producto $promocion_producto)
+    public function show($id)
     {
-        //
+        $promocion = promocion_producto::find($id);
+        if (is_null($promocion)) {
+            return response()->json(['message' => 'Promocion no encontrada'], 404);
+        }
+        return response()->json($promocion);
     }
 
     /**
@@ -67,9 +87,28 @@ class PromocionProductoController extends Controller
      * @param  \App\Models\promocion_producto  $promocion_producto
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, promocion_producto $promocion_producto)
+    public function update(Request $request, $id)
     {
-        //
+        $promocion = promocion_producto::find($id);
+        if (is_null($promocion)) {
+            return response()->json(['message' => 'Promocion no encontrada'], 404);
+        }
+        $validateData=$request->validate([
+            'stock'=>'required',
+            'descuento'=>'required',
+           'fecha_inicio'=>'required',
+           'fecha_fin'=>'required',
+           'id_producto'=>'required',
+        ]);
+
+        $promocion->stock = $validateData['stock'];
+        $promocion->descuento = $validateData['descuento'];
+        $promocion->fecha_inicio = $validateData['fecha_inicio'];
+        $promocion->fecha_fin = $validateData['fecha_fin'];
+        $promocion->id_producto = $validateData['id_producto'];
+        $promocion->save();
+
+        return response()->json(['message'=>'promocion actualizada'],200);
     }
 
     /**
@@ -78,8 +117,14 @@ class PromocionProductoController extends Controller
      * @param  \App\Models\promocion_producto  $promocion_producto
      * @return \Illuminate\Http\Response
      */
-    public function destroy(promocion_producto $promocion_producto)
+    public function destroy($id)
     {
-        //
+        $promocion = promocion_producto::find($id);
+        if (is_null($promocion)) {
+            return response()->json(['message' => 'Promocion no encontrada'], 404);
+        }
+        $promocion->estado=0;
+        $promocion->save();
+        return response()->json(['message'=>'promocion actualizada'],200);
     }
 }

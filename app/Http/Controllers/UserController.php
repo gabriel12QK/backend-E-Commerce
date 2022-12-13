@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $user = User::all();
+        $user = User::where('estado',1)->get();
         return response()->json($user, 200);
     }
 
@@ -120,6 +120,15 @@ class UserController extends Controller
         $user->state =false;
         $user->save();
         return response()->json(['message' => 'eliminado'], 200);
+    }
+
+    public function Show($id)
+    {
+        $user = User::find($id);
+        if (is_null($user)) {
+            return response()->json(['message' => 'usuario no encontrado'], 404);
+        }
+        return response()->json($user);
     }
 
    

@@ -14,7 +14,8 @@ class MarcaController extends Controller
      */
     public function index()
     {
-        //
+        $marca = marca::where('estado',1)->get();
+        return response()->json($marca, 200);
     }
 
     /**
@@ -24,7 +25,7 @@ class MarcaController extends Controller
      */
     public function create()
     {
-        //
+       
     }
 
     /**
@@ -35,7 +36,13 @@ class MarcaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validateData=$request->validate([
+            'descripcion'=>'required|string|max:255'
+        ]);
+        $marca=marca::create([
+            'descripcion'=>$validateData['descripcion'],
+            'estado'=>1,
+        ]);
     }
 
     /**
@@ -44,9 +51,13 @@ class MarcaController extends Controller
      * @param  \App\Models\marca  $marca
      * @return \Illuminate\Http\Response
      */
-    public function show(marca $marca)
+    public function show($id)
     {
-        //
+        $marca=marca::find($id);
+        if (is_null($marca)) {
+            return response()->json(['message' => 'Marca no encontrada'], 404);
+        }
+        return response()->json($marca);
     }
 
     /**
@@ -78,8 +89,14 @@ class MarcaController extends Controller
      * @param  \App\Models\marca  $marca
      * @return \Illuminate\Http\Response
      */
-    public function destroy(marca $marca)
+    public function destroy($id)
     {
-        //
+        $marca=marca::find($id);
+        if (is_null($marca)) {
+            return response()->json(['message' => 'Marca no encontrada'], 404);
+        }
+        $marca->estado=false;
+        $marca->save();
+        return response()->json(['message'=>'marca eliminada']);
     }
 }

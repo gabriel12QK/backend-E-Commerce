@@ -14,7 +14,8 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        //
+        $producto = producto::where('estado',1)->get();
+        return response()->json($producto, 200);
     }
 
     /**
@@ -106,7 +107,7 @@ class ProductoController extends Controller
         if (is_null($producto)) {
            return response()->json(['message'=> 'Producto no encontrado'], 404);
         }
-        $valiData=$request->validate([
+        $validateData=$request->validate([
             'nombre'=>'required|string|max:255',
             'precio'=>'required|max:255',
             'peso'=>'required|max:255',
