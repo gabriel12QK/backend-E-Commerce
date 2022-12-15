@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('estado_ordens', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion');
-            $table->boolean('estado');
+            $table->boolean('estado')->default(true);
         });
     }
 

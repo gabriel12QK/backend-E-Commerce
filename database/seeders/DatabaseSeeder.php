@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             Usuario::class,
             Marcas::class,
             Categorias::class,
+            TipoPago::class,
+            EstadoOrden::class
         ]);
     }
 }
