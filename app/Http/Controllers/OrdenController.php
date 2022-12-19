@@ -116,13 +116,13 @@ class OrdenController extends Controller
                 ->get();
                switch ($value->id_estado_orden) {
                 case '1':
-                           array_push($Por_Entregar,['repartidor_name'=>$value->repartidor ,'repartidor_lastname'=>$value->last_name,'fecha_venta'=>$value->fecha,'total'=>$value->total,'forma-pago'=>$value->descripcion, 'estado'=>$value->estado_orden, 'destinatario'=>$venta]); 
+                           array_push($Por_Entregar,['repartidor_name'=>$value->repartidor ,'repartidor_lastname'=>$value->last_name,'numero_pedido'=>$value->id,'fecha_venta'=>$value->fecha,'total'=>$value->total,'forma_pago'=>$value->descripcion, 'estado'=>$value->estado_orden, 'destinatario'=>$venta]); 
                     break;
                 case '2':
-                            array_push($En_Curso,['repartidor'=>$value->repartidor,'repartidor_lastname'=>$value->last_name,'fecha_venta'=>$value->fecha,'total'=>$value->total,'forma-pago'=>$value->descripcion, 'estado'=>$value->estado_orden, 'destinatario'=>$venta]);
+                            array_push($En_Curso,['repartidor'=>$value->repartidor,'repartidor_lastname'=>$value->last_name,'numero_pedido'=>$value->id,'fecha_venta'=>$value->fecha,'total'=>$value->total,'forma_pago'=>$value->descripcion, 'estado'=>$value->estado_orden, 'destinatario'=>$venta]);
                     break;
                 case '3':
-                            array_push($Entregada,['repartidor'=>$value->repartidor,'repartidor_lastname'=>$value->last_name,'fecha_venta'=>$value->fecha,'total'=>$value->total,'forma-pago'=>$value->descripcion, 'estado'=>$value->estado_orden, 'destinatario'=>$venta]);
+                            array_push($Entregada,['repartidor'=>$value->repartidor,'repartidor_lastname'=>$value->last_name,'numero_pedido'=>$value->id,'fecha_venta'=>$value->fecha,'total'=>$value->total,'forma_pago'=>$value->descripcion, 'estado'=>$value->estado_orden, 'destinatario'=>$venta]);
                 break;
                 
                 default:
