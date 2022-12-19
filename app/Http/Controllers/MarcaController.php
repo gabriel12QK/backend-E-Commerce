@@ -43,6 +43,8 @@ class MarcaController extends Controller
             'descripcion'=>$validateData['descripcion'],
             'estado'=>1,
         ]);
+
+        return response()->json(['message'=>'Marca registrada'],200);
     }
 
     /**

@@ -14,7 +14,9 @@ class TipoPesoController extends Controller
      */
     public function index()
     {
-        //
+        $tipo_peso = tipo_peso::where('estado',1)->get();
+        return response()->json($tipo_peso, 200);
+
     }
 
     /**
@@ -35,7 +37,14 @@ class TipoPesoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validateData=$request->validate([
+            'descripcion'=>'required|string|max:255'
+        ]);
+        $tipo_peso=tipo_peso::create([
+            'descripcion'=>$validateData['descripcion'],
+            'estado'=>1,
+        ]);
+        return response()->json(['message'=>'tipo peso registrado'],200);
     }
 
     /**
@@ -44,9 +53,13 @@ class TipoPesoController extends Controller
      * @param  \App\Models\tipo_peso  $tipo_peso
      * @return \Illuminate\Http\Response
      */
-    public function show(tipo_peso $tipo_peso)
+    public function show($id)
     {
-        //
+        $tipo_peso=tipo_peso::find($id);
+        if (is_null($tipo_peso)) {
+            return response()->json(['message' => 'Tipo_peso no encontrada'], 404);
+        }
+        return response()->json($tipo_peso);
     }
 
     /**
@@ -78,8 +91,15 @@ class TipoPesoController extends Controller
      * @param  \App\Models\tipo_peso  $tipo_peso
      * @return \Illuminate\Http\Response
      */
-    public function destroy(tipo_peso $tipo_peso)
+    public function destroy($id)
     {
-        //
+        $tipo_peso=tipo_peso::find($id);
+        if (is_null($tipo_peso)) {
+            return response()->json(['message' => 'tipo_peso no encontrada'], 404);
+        }
+        $tipo_peso->estado=false;
+        $tipo_peso->save();
+        return response()->json(['message'=>'tipo_peso eliminada']);
     }
-}
+    }
+

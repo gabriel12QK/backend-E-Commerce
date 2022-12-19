@@ -43,6 +43,8 @@ class CategoriaController extends Controller
             'descripcion'=>$validateData['descripcion'],
             'estado'=>1,
         ]);
+
+        return response()->json(['message'=>'Categoria registrada'],200);
     }
 
     /**

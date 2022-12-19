@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\PromocionProductoController;
+use App\Http\Controllers\TipoPesoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,7 @@ Route::resource('producto', ProductoController::class);
 Route::resource('categoria', CategoriaController::class);
 Route::resource('promocion-producto',PromocionProductoController::class);
 Route::resource('marca', MarcaController::class);
+Route::resource('tipo_peso', TipopesoController::class);
 Route::post('/edit-precio/{id}',[ ProductoController::class,'editPrecio']);
 Route::post('/edit-stock/{id}',[ ProductoController::class,'editStock']);
 Route::post('/edit-imagen/{id}',[ ProductoController::class,'editImagen']);
