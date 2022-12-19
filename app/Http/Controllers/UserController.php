@@ -30,7 +30,7 @@ class UserController extends Controller
         'password' => 'required|string|min:8',
         'imagen'=>'required'
         ]);
-        $type=3;
+        $type=2;
          $user = User::create([
         'name' => $validData['name'],
         'last_name' => $validData['last_name'],

@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\PromocionProductoController;
+use App\Http\Controllers\OrdenController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,7 @@ Route::post('/update-password/{id}', [UserController::class, 'editPassword']);
 Route::post('/login', [UserController::class, 'login']);
 Route::get('/user-index', [UserController::class, 'index']);
 Route::get('/show/{id}', [UserController::class, 'Show']);
+Route::get('/show-orden-estado', [OrdenController::class, 'ShowOrdenEstado']);
 Route::resource('producto', ProductoController::class);
 Route::resource('categoria', CategoriaController::class);
 Route::resource('promocion-producto',PromocionProductoController::class);
