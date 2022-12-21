@@ -175,5 +175,53 @@ class UserController extends Controller
 
     }
 
-   
+    public function updateImage(Request $request, $id)
+    {
+
+        $user = User::find($id);
+        if (is_null($user)) {
+            return response()->json(['message' => 'No encontrado'], 404);
+        }
+        $validData = $request->validate([
+            'imagen' => 'required|image|mimes:jpg,jpeg,png,gif,svg'
+        ]);
+
+        $validData['imagen'] = $request->file('imagen')->getClientOriginalName();
+        $request->file('imagen')->storeAs("public/images/persona/{$user->id}", $validData['imagen']);
+
+        /*  if ($person->image != '') {
+            unlink(storage_path("app/public/images/persons/{$person->userId}/" . $person->image));
+        } */
+        $user->imagen = $validData['imagen'];
+        $user->save();
+        return response()->json(['message' => 'Imagen actualizada'], 201);
+    }
+
+
+    public function updateUser(Request $request, $id){
+        $user = User::find($id);
+        if (is_null($user)) {
+            return response()->json(['message' => 'No encontrado'], 404);
+        }
+        $validateData = $request->validate([
+            'name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'referencia'=>'required',
+            'direccion'=>'required|string|max:255',
+            'telefono'=>'required|string',
+            //'cedula'=>'required|string|max:10',
+            'email' => 'required|string|email|max:255',
+           // 'password' => 'required|string|min:8',
+           // 'imagen'=>'required'
+        ]);
+        $user->name=$validateData['name'];
+        $user->last_name=$validateData['last_name'];
+        $user->referencia=$validateData['referencia'];
+        $user->direccion=$validateData['direccion'];
+        $user->telefono=$validateData['telefono'];
+        $user->email=$validateData['email'];
+        // $user->name=$validateData['name'];
+        $user->save();
+        return response()->json(['message' => 'actualizado'], 201);
+    }
 }

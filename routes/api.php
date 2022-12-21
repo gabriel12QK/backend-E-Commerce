@@ -26,6 +26,8 @@ Route::post('/registro', [UserController::class, 'register']);
 Route::post('/update-email/{id}', [UserController::class, 'editUserEmail']);
 Route::post('/update-password/{id}', [UserController::class, 'editPassword']);
 Route::post('/login', [UserController::class, 'login']);
+Route::post('/imagen-update/{id}', [UserController::class, 'updateImage']);
+Route::post('/usuario-update/{id}', [UserController::class, 'updateUser']);
 Route::get('/user-index', [UserController::class, 'index']);
 Route::get('/show/{id}', [UserController::class, 'Show']);
 //repartidor
