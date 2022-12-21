@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\producto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductoController extends Controller
 {
@@ -14,7 +15,19 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        $producto = producto::where('estado',1)->get();
+
+       
+
+        $producto = DB::table('productos')
+        ->join('marcas','productos.id_marca','=','marcas.id')
+        ->join('tipo_pesos','productos.id_tipo_peso','=','tipo_pesos.id')
+        ->join('categorias','productos.id_categoria','=','categorias.id')
+        ->select('productos.*','marcas.descripcion as marca','tipo_pesos.descripcion as tipo_peso','categorias.descripcion as categoria')
+        ->where('productos.estado',1)
+        ->where('marcas.estado',1)
+        ->where('tipo_pesos.estado',1)
+        ->where('categorias.estado',1)
+        ->get();
         return response()->json($producto, 200);
     }
 
@@ -40,12 +53,15 @@ class ProductoController extends Controller
             'nombre'=>'required|string|max:255',
             'precio'=>'required|max:255',
             'peso'=>'required|max:255',
-            'stock'=>'required|integer',
-            'imagen'=>'required|mimes:jpeg,bmp,png',
+            'stock'=>'required',
+            'imagen' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'id_categoria'=>'required',
             'id_marca'=>'required',
             'id_tipo_peso'=>'required',
         ]);
+        $img = $request->file('imagen');
+        $valiData['imagen'] =  time().'.'.$img->getClientOriginalExtension();
+
         $producto=producto::create([
             'nombre'=>$valiData['nombre'],
             'precio'=>$valiData['precio'],
@@ -57,11 +73,9 @@ class ProductoController extends Controller
             'estado'=>1,
             'id_tipo_peso'=>$valiData['id_tipo_peso'],
         ]);
-        $img=$request->file('imagen');
-        $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
 
  
-        $request->file('imagen')->storeAs("public/images/producto/{$producto->id}", $validData['imagen']);
+        $request->file('imagen')->storeAs("public/images/producto/{$producto->id}", $valiData['imagen']);
         return response()->json(['message'=>'Producto registrado'],200);
     }
 
