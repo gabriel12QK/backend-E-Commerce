@@ -175,6 +175,11 @@ class UserController extends Controller
 
     }
 
+    public function getAllRepartidores(){
+        $repartidores = User::where('id_tipo_usuario', 3)->where('estado', 1)->get();
+        return response()->json($repartidores, 200);
+    }
+
     public function updateImage(Request $request, $id)
     {
 

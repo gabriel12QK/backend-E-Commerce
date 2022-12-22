@@ -32,6 +32,8 @@ Route::get('/user-index', [UserController::class, 'index']);
 Route::get('/show/{id}', [UserController::class, 'Show']);
 //repartidor
 Route::post('/registro-repartidor', [UserController::class, 'registerRepartidor']);
+Route::get('/getAllRepartidores', [UserController::class, 'getAllRepartidores']);
+
 
 // orden - pedido
 Route::get('/show-orden-estado', [OrdenController::class, 'ShowOrdenEstado']);
