@@ -35,6 +35,7 @@ Route::post('/registro-repartidor', [UserController::class, 'registerRepartidor'
 
 // orden - pedido
 Route::get('/show-orden-estado', [OrdenController::class, 'ShowOrdenEstado']);
+Route::resource('orden', OrdenController::class);
 
 //producto
 Route::resource('producto', ProductoController::class);

@@ -18,7 +18,8 @@ class OrdenController extends Controller
      */
     public function index()
     {
-        //
+       $orden=orden::where('estado',1)->get();
+       return response()->json($orden);
     }
 
     /**
@@ -99,10 +100,10 @@ class OrdenController extends Controller
             ->join('users','ordens.id_repartidor','=','users.id')
             ->join('ventas','ordens.id_venta','=','ventas.id')
             ->join('tipo_pagos','ventas.id_tipo_pago','=','tipo_pagos.id')
-            ->join('detalle_ventas','ventas.id','=','detalle_ventas.id_venta')
-            ->join('productos','detalle_ventas.id_producto','=','productos.id')
+            //->join('detalle_ventas','ventas.id','=','detalle_ventas.id_venta')
+            //->join('productos','detalle_ventas.id_producto','=','productos.id')
             ->select('ordens.*','users.name as repartidor','users.last_name','users.cedula','ventas.subtotal','ventas.total','ventas.fecha','tipo_pagos.descripcion',
-                    'productos.nombre','estado_ordens.descripcion as estado_orden')
+                   'estado_ordens.descripcion as estado_orden')
             ->where('ordens.estado',1)
             ->get();
             foreach($orden as $key=>$value)
