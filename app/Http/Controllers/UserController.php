@@ -147,8 +147,11 @@ class UserController extends Controller
             'imagen'=>'required'
 
         ]);
-
+        
         $type = 3;
+        //imagen
+        $img=$request->file('imagen');
+        $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
 
         $user = User::create([
             'name' => $validData['name'],
@@ -164,9 +167,6 @@ class UserController extends Controller
             'id_tipo_usuario' => $type,
         ]);
     
-        //imagen
-        $img=$request->file('imagen');
-        $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
     
      
         $request->file('imagen')->storeAs("public/images/repartidor/{$user->id}", $validData['imagen']);
