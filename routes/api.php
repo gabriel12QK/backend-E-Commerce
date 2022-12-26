@@ -62,7 +62,7 @@ Route::resource('promocion-producto',PromocionProductoController::class);
 Route::resource('marca', MarcaController::class);
 
 //Registro promocion
-Route::get('/kits/{id}',[RegistroPromocionController::class,'showPromocion']);
+Route::get('/showkits/{id}',[RegistroPromocionController::class,'showPromocion']);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
