@@ -32,6 +32,9 @@ class UserController extends Controller
         ]);
 
         $type=2;
+        //imagen
+        $img=$request->file('imagen');
+        $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
 
         $user = User::create([
             'name' => $validData['name'],
@@ -47,9 +50,6 @@ class UserController extends Controller
             'id_tipo_usuario' => $type,
         ]);
 
-        //imagen
-        $img=$request->file('imagen');
-        $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
 
         $request->file('imagen')->storeAs("public/images/persona/{$user->id}", $validData['imagen']);
 
@@ -116,18 +116,18 @@ class UserController extends Controller
     {
         $user = User::find($id);
         if (is_null($user)) {
-            return response()->json(['message' => 'usuario no encontrado'], 404);
+            return response()->json(['message' => 'Usuario no encontrado.'], 404);
         }
-        $user->state =false;
+        $user->estado = 0;
         $user->save();
-        return response()->json(['message' => 'eliminado'], 200);
+        return response()->json(['message' => 'Usuario eliminado.'], 200);
     }
 
     public function Show($id)
     {
         $user = User::find($id);
         if (is_null($user)) {
-            return response()->json(['message' => 'usuario no encontrado'], 404);
+            return response()->json(['message' => 'Usuario no encontrado'], 404);
         }
         return response()->json($user);
     }
@@ -147,8 +147,11 @@ class UserController extends Controller
             'imagen'=>'required'
 
         ]);
-
+        
         $type = 3;
+        //imagen
+        $img=$request->file('imagen');
+        $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
 
         $user = User::create([
             'name' => $validData['name'],
@@ -164,15 +167,21 @@ class UserController extends Controller
             'id_tipo_usuario' => $type,
         ]);
     
-        //imagen
-        $img=$request->file('imagen');
-        $validData['imagen'] = time().'.'.$img->getClientOriginalExtension();
     
      
         $request->file('imagen')->storeAs("public/images/repartidor/{$user->id}", $validData['imagen']);
     
         return response()->json(['message' => 'Usuario registrado'], 200);
 
+    }
+
+    public function getAllRepartidores(){
+        $repartidores = User::where('id_tipo_usuario', 3)->where('estado', 1)->get();
+        return response()->json($repartidores, 200);
+    }
+    public function getAllUsuarios(){
+        $users = User::where('id_tipo_usuario', 2)->where('estado', 1)->get();
+        return response()->json($users, 200);
     }
 
     public function updateImage(Request $request, $id)
@@ -201,7 +210,7 @@ class UserController extends Controller
     public function updateUser(Request $request, $id){
         $user = User::find($id);
         if (is_null($user)) {
-            return response()->json(['message' => 'No encontrado'], 404);
+            return response()->json(['message' => 'Usuario encontrado'], 404);
         }
         $validateData = $request->validate([
             'name' => 'required|string|max:255',
@@ -209,8 +218,8 @@ class UserController extends Controller
             'referencia'=>'required',
             'direccion'=>'required|string|max:255',
             'telefono'=>'required|string',
-            //'cedula'=>'required|string|max:10',
-            'email' => 'required|string|email|max:255',
+            'cedula'=>'required|string|max:10',
+           // 'email' => 'required|string|email|max:255',
            // 'password' => 'required|string|min:8',
            // 'imagen'=>'required'
         ]);
@@ -219,9 +228,9 @@ class UserController extends Controller
         $user->referencia=$validateData['referencia'];
         $user->direccion=$validateData['direccion'];
         $user->telefono=$validateData['telefono'];
-        $user->email=$validateData['email'];
+        $user->cedula=$validateData['cedula'];
         // $user->name=$validateData['name'];
         $user->save();
-        return response()->json(['message' => 'actualizado'], 201);
+        return response()->json(['message' => 'Usuario actualizado'], 201);
     }
 }

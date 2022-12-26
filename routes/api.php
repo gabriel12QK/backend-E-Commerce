@@ -31,8 +31,13 @@ Route::post('/imagen-update/{id}', [UserController::class, 'updateImage']);
 Route::post('/usuario-update/{id}', [UserController::class, 'updateUser']);
 Route::get('/user-index', [UserController::class, 'index']);
 Route::get('/show/{id}', [UserController::class, 'Show']);
+Route::delete('/delete-usuario/{id}', [UserController::class, 'destroy']); //sirve para eliminar usuarios normales y repartidores
+Route::get('/getAllUsuarios', [UserController::class, 'getAllUsuarios']);
 //repartidor
 Route::post('/registro-repartidor', [UserController::class, 'registerRepartidor']);
+Route::get('/getAllRepartidores', [UserController::class, 'getAllRepartidores']);
+
+
 
 // orden - pedido
 Route::get('/show-orden-estado', [OrdenController::class, 'ShowOrdenEstado']);
