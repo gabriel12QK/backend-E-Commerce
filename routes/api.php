@@ -48,6 +48,7 @@ Route::resource('producto', ProductoController::class);
 Route::post('/edit-precio/{id}',[ ProductoController::class,'editPrecio']);
 Route::post('/edit-stock/{id}',[ ProductoController::class,'editStock']);
 Route::post('/edit-imagen/{id}',[ ProductoController::class,'editImagen']);
+Route::get('showProducto/{id}',[ProductoController::class,'showProducto']);
 
 //tipo peso
 Route::resource('tipo_peso', TipoPesoController::class);
