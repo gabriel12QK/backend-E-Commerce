@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
             Marcas::class,
             Categorias::class,
             TipoPago::class,
-            EstadoOrden::class
+            EstadoOrden::class,
+            SituacionPromocion::class
         ]);
     }
 }

@@ -16,14 +16,15 @@ return new class extends Migration
         Schema::create('registro_promocions', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion');
+            $table->string('imagen');
             $table->integer('descuento');
             $table->integer('cantidad_inicial');
             $table->integer('cantidad_restante'); // esta debe ser igual que la de arriba en un principio y luego irse restando
             $table->date('fecha_inicio');
             $table->date('fecha_fin');
-            $table->enum('situacion_promocion', ['PUBLICADO', 'EXPIRADA', 'AGOTADA']); //esto puede cambiar y manejarse con otra tabla
-            $table->boolean('estado');
+            $table->foreignId('id_situacion_promocion')->constrained('situacion_promocions');
             $table->foreignId('id_tipo_promocion')->constrained('tipo_promocions');
+            $table->boolean('estado');
 
         });
     }
