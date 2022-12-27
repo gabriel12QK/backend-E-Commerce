@@ -90,10 +90,11 @@ class RegistroPromocionController extends Controller
     {
         $data=Array();
         $promo=DB::table('registro_promocions')
+       // ->join('nombre_tabla','campo a comparar de la tabla principal','=','')
         ->join('precio_kits','registro_promocions.id','=','precio_kits.id_registro_promocion')
         ->join('tipo_promocions','registro_promocions.id_tipo_promocion','=','tipo_promocions.id')
         ->join('kits','registro_promocions.id','=','kits.id')
-       ->select('registro_promocions.*','tipo_promocions.descripcion as tipoDescripcion','kits.id as kitId','precio_kits.precio as precioKit')
+        ->select('registro_promocions.*','tipo_promocions.descripcion as tipoDescripcion','kits.id as kitId','precio_kits.precio as precioKit')
        ->where('registro_promocions.estado',1)
        ->where('registro_promocions.id',$id)
         ->get();
@@ -105,7 +106,7 @@ class RegistroPromocionController extends Controller
         ->where('id_registro_promocion',$id)
         ->get();
         foreach ($promo as $key => $value) {
-            array_push($data,['descripcionKit'=>$value->descripcion,'tipoPromocion'=>$value->tipoDescripcion,'precioKit'=>$value->precioKit,'cantidadRestante'=>$value->cantidad_restante,'contenidoKit'=>$kits]);
+            array_push($data,['nombreusuar'=>$value->descripcion,'tipoPromocion'=>$value->tipoDescripcion,'precioKit'=>$value->precioKit,'cantidadRestante'=>$value->cantidad_restante,'contenidoKit'=>$kits]);
         }
       
         return response()->json($data);
