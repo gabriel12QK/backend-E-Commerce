@@ -203,4 +203,18 @@ class ProductoController extends Controller
         $producto->save();
         return response()->json(['message' => 'Stock actualizado'], 201);
     }
+
+
+    public function showProducto($id){
+        $producto=DB::table('productos')
+        ->join('tipo_pesos','productos.id_tipo_peso','=','tipo_pesos.id')
+        ->select('productos.*','tipo_pesos.descripcion as tipo_peso')
+        ->where('productos.id',$id)
+        ->where('productos.estado',1)
+        ->get();
+        if (is_null($producto)) {
+            return response()->json(['message'=> "Producto no encontrado"],404);
+        }
+        return response()->json($producto,200);
+    }
 }
