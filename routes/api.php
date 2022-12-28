@@ -9,6 +9,7 @@ use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\PromocionProductoController;
 use App\Http\Controllers\OrdenController;
 use App\Http\Controllers\TipoPesoController;
+use App\Http\Controllers\VentaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,6 +61,9 @@ Route::resource('promocion-producto',PromocionProductoController::class);
 //marca
 Route::resource('marca', MarcaController::class);
 
+//venta
+Route::resource('/show-venta', [VentaController::class, 'ShowVenta']);
+Route::resource('venta', VentaController::class);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

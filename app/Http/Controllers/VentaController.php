@@ -14,7 +14,8 @@ class VentaController extends Controller
      */
     public function index()
     {
-        //
+        $venta=venta::where('estado',1)->get();
+        return response()->json($venta);
     }
 
     /**
@@ -81,5 +82,20 @@ class VentaController extends Controller
     public function destroy(venta $venta)
     {
         //
+    }
+
+    public function ShowVenta()
+    {
+        $venta= DB::table('ventas')
+        ->join('id_venta','ventas.detalle_ventas','=','detalle_venta.id')
+        ->join('user','ventas.id_user', '=','users.id')
+        ->join('tipo_pagos','ventas.id_tipo_pago','=','tipo_pago.id')
+        ->select('ventas.*',
+        'users.name','users.last_name','users.cedula',
+        'detalle_ventas.precio','detalle_ventas.cantidad',
+        'tipo_pagos.descripcion as tipo_pago'
+        )
+        ->where('ventas.estado',1)
+        ->get();
     }
 }
