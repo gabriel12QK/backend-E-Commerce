@@ -11,6 +11,7 @@ use App\Http\Controllers\OrdenController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\TipoPesoController;
 use App\Http\Controllers\RegistroPromocionController;
+use App\Http\Controllers\TipoPromocionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,8 +53,8 @@ Route::post('/edit-imagen/{id}',[ ProductoController::class,'editImagen']);
 Route::get('showProducto/{id}',[ProductoController::class,'showProducto']);
 
 //venta
-Route::resource('/show-venta', [VentaController::class, 'ShowVenta']);
 Route::resource('venta', VentaController::class);
+Route::get('/show-venta', [VentaController::class, 'ShowVenta']);
 
 //tipo peso
 Route::resource('tipo_peso', TipoPesoController::class);
@@ -66,6 +67,10 @@ Route::resource('promocion-producto',PromocionProductoController::class);
 
 //marca
 Route::resource('marca', MarcaController::class);
+
+//tipo promocion
+
+Route::resource('tipo-promocion', TipoPromocionController::class);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

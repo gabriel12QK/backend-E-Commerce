@@ -44,7 +44,7 @@ class MarcaController extends Controller
             'estado'=>1,
         ]);
 
-        return response()->json(['message'=>'Marca registrada'],200);
+        return response()->json(['message'=>'Marca registrada'], 201);
     }
 
     /**
@@ -97,7 +97,7 @@ class MarcaController extends Controller
         if (is_null($marca)) {
             return response()->json(['message' => 'Marca no encontrada'], 404);
         }
-        $marca->estado=false;
+        $marca->estado = 0;
         $marca->save();
         return response()->json(['message'=>'marca eliminada']);
     }

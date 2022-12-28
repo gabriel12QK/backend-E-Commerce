@@ -97,7 +97,7 @@ class TipoPesoController extends Controller
         if (is_null($tipo_peso)) {
             return response()->json(['message' => 'tipo_peso no encontrada'], 404);
         }
-        $tipo_peso->estado=false;
+        $tipo_peso->estado=0;
         $tipo_peso->save();
         return response()->json(['message'=>'tipo_peso eliminada']);
     }

@@ -97,7 +97,7 @@ class CategoriaController extends Controller
         if (is_null($categoria)) {
             return response()->json(['message' => 'Categoria no encontrada'], 404);
         }
-        $categoria->estado=false;
+        $categoria->estado=0;
         $categoria->save();
         return response()->json(['message'=>'Categoria eliminada']);
     }
