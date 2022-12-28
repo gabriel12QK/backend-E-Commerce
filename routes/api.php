@@ -8,12 +8,9 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\PromocionProductoController;
 use App\Http\Controllers\OrdenController;
-use App\Http\Controllers\TipoPesoController;
-<<<<<<< HEAD
 use App\Http\Controllers\VentaController;
-=======
+use App\Http\Controllers\TipoPesoController;
 use App\Http\Controllers\RegistroPromocionController;
->>>>>>> ade632261da7068cc354f7471768cda745e05e9b
 
 /*
 |--------------------------------------------------------------------------
@@ -70,13 +67,6 @@ Route::resource('promocion-producto',PromocionProductoController::class);
 //marca
 Route::resource('marca', MarcaController::class);
 
-<<<<<<< HEAD
-
-=======
-//Registro promocion
-Route::get('/showkits/{id}',[RegistroPromocionController::class,'showPromocion']);
-
->>>>>>> ade632261da7068cc354f7471768cda745e05e9b
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
