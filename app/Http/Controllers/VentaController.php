@@ -134,7 +134,7 @@ class VentaController extends Controller
                     foreach ($detalleVentaKit as $key => $value1) {
                         array_push($datakit,['venta'=>$value1->descripcion,'nombreArticulo'=>$value1->tipoDescripcion,'precioKit'=>$value1->precioKit,'cantidadRestante'=>$value1->cantidad_restante,'subtotal'=>$value->subtotal,'total'=>$value->total,'cantidad'=>$value->cantidad,'fechaVenta'=>$value->fecha,'contenidoKit'=>$kits]);
                     }
-                    array_push($dataVenta,['nombreComprador:'=>$value->name,'apellidoComprador'=>$value->last_name,'ventaId'=>$value->id,'Articulo'=>$datakit,]);
+                    array_push($dataVenta,['nombreComprador:'=>$value->name,'apellidoComprador'=>$value->last_name,'ventaId'=>$value->id,'cantidad'=>$value->cantidad,'fechaVenta'=>$value->fecha,'subtotal'=>$value->subtotal,'total'=>$value->total,'Articulo'=>$datakit,]);
                    
         }
         else if ($value->id_promocion_producto) {
