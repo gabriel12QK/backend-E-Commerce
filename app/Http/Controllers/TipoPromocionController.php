@@ -50,24 +50,13 @@ class TipoPromocionController extends Controller
         return response()->json($tipo_promocion, 200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\tipo_promocion  $tipo_promocion
-     * @return \Illuminate\Http\Response
-     */
+    
     public function edit(tipo_promocion $tipo_promocion)
     {
-        //
+        //a
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\tipo_promocion  $tipo_promocion
-     * @return \Illuminate\Http\Response
-     */
+    
     public function update(Request $request, $id)
     {
         //
