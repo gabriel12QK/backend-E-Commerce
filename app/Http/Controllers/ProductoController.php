@@ -217,4 +217,18 @@ class ProductoController extends Controller
         }
         return response()->json($producto,200);
     }
+
+    public function showProductoCategoria($id)
+    {
+        $producto=DB::table('productos')
+        ->join('categorias','productos.id_categoria','=','categorias.id')
+        ->select('productos.*','categorias.descripcion')
+        ->where('productos.id_categoria',$id)
+        ->where('productos.estado',1)
+        ->get();
+        if (count($producto)==0) {
+           return response()->json(['message'=> "No hay productos registrados en esta categoria"],404);
+        }
+        return response()->json($producto);
+    }
 }
