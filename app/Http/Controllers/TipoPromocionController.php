@@ -43,7 +43,7 @@ class TipoPromocionController extends Controller
         //
         $tipo_promocion = tipo_promocion::find($id);
 
-        if(is_null($marca)){
+        if(is_null($tipo_promocion)){
             return response()->json(['message' => 'Tipo de promoción no encontrado'], 404);
         }
 
@@ -73,7 +73,7 @@ class TipoPromocionController extends Controller
         //
         $tipo_promocion = tipo_promocion::find($id);
 
-        if(is_null($marca)){
+        if(is_null($tipo_promocion)){
             return response()->json(['message' => 'Tipo de promoción no encontrado'], 404);
         }
         $validateData = $request->validate([
@@ -92,7 +92,7 @@ class TipoPromocionController extends Controller
         //
         $tipo_promocion = tipo_promocion::find($id);
 
-        if(is_null($marca)){
+        if(is_null($tipo_promocion)){
             return response()->json(['message' => 'Tipo de promoción no encontrado'], 404);
         }
         
