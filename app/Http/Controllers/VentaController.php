@@ -96,7 +96,7 @@ class VentaController extends Controller
         ->join('detalle_ventas','ventas.id','=','detalle_ventas.id_venta')
         ->join('users','ventas.id_user', '=','users.id')
         ->join('tipo_pagos','ventas.id_tipo_pago','=','tipo_pagos.id')
-        ->select('ventas.id',
+        ->select('ventas.*',
         'users.name','users.last_name','users.cedula','users.id as userId',
         'detalle_ventas.precio','detalle_ventas.cantidad','detalle_ventas.id_producto','detalle_ventas.id_promocion_producto','detalle_ventas.id_registro_promocion',
         'tipo_pagos.descripcion as tipo_pago'
@@ -113,7 +113,7 @@ class VentaController extends Controller
                         ->where('detalle_ventas.id_venta',$value->id)
                         ->where('ventas.id_user',$value->userId)
                         ->get();
-                       array_push($dataVenta,['nombreComprador:'=>$value->name,'apellidoComprador'=>$value->last_name, 'productos'=>$detalleVentaProducto,]);
+                       array_push($dataVenta,['nombreComprador:'=>$value->name,'apellidoComprador'=>$value->last_name,'ventaId'=>$value->id, 'subtotal'=>$value->subtotal,'total'=>$value->total,'cantidad'=>$value->cantidad,'fechaVenta'=>$value->fecha ,'productos'=>$detalleVentaProducto,]);
                             } 
         else if ($value->id_registro_promocion!=null) {
                  $detalleVentaKit=DB::table('detalle_ventas')
@@ -132,13 +132,30 @@ class VentaController extends Controller
                     ->where('id_registro_promocion',$value->id_registro_promocion)
                     ->get();
                     foreach ($detalleVentaKit as $key => $value1) {
-                        array_push($datakit,['venta'=>$value1->descripcion,'tipoPromocion'=>$value1->tipoDescripcion,'precioKit'=>$value1->precioKit,'cantidadRestante'=>$value1->cantidad_restante,'contenidoKit'=>$kits]);
+                        array_push($datakit,['venta'=>$value1->descripcion,'tipoPromocion'=>$value1->tipoDescripcion,'precioKit'=>$value1->precioKit,'cantidadRestante'=>$value1->cantidad_restante,'subtotal'=>$value->subtotal,'total'=>$value->total,'cantidad'=>$value->cantidad,'fechaVenta'=>$value->fecha,'contenidoKit'=>$kits]);
                     }
-                    array_push($dataVenta,['nombreComprador:'=>$value->name,'apellidoComprador'=>$value->last_name,'kits'=>$datakit,]);
+                    array_push($dataVenta,['nombreComprador:'=>$value->name,'apellidoComprador'=>$value->last_name,'ventaId'=>$value->id,'kits'=>$datakit,]);
                    
         }
+        else if ($value->id_promocion_producto) {
+                $detalleVentaPromocion=DB::table('detalle_ventas')
+                ->join('ventas','detalle_ventas.id_venta','=','ventas.id')
+                ->join('promocion_productos','detalle_ventas.id_promocion_producto','=','promocion_productos.id')
+                ->join('productos','promocion_productos.id_producto','=','productos.id')
+                ->select('productos.nombre', 'productos.precio','detalle_ventas.cantidad','promocion_productos.descuento')
+                ->where('detalle_ventas.id_venta',$value->id)
+                ->where('ventas.id_user',$value->userId)
+                ->get();
+                array_push($dataVenta,['nombreComprador:'=>$value->name,'apellidoComprador'=>$value->last_name,'ventaId'=>$value->id,'subtotal'=>$value->subtotal,'total'=>$value->total,'cantidad'=>$value->cantidad,'fechaVenta'=>$value->fecha,'producto_promocion'=>$detalleVentaPromocion,]);
+           
+        }
+           
        }
-
+    
         return response()->json($dataVenta);
     }
+    // public function mergeArray($a)
+    // {
+  
+    // }
 }
