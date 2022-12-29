@@ -43,37 +43,26 @@ class TipoPromocionController extends Controller
         //
         $tipo_promocion = tipo_promocion::find($id);
 
-        if(is_null($marca)){
+        if(is_null($tipo_promocion)){
             return response()->json(['message' => 'Tipo de promoción no encontrado'], 404);
         }
 
         return response()->json($tipo_promocion, 200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\tipo_promocion  $tipo_promocion
-     * @return \Illuminate\Http\Response
-     */
+    
     public function edit(tipo_promocion $tipo_promocion)
     {
-        //
+        //a
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\tipo_promocion  $tipo_promocion
-     * @return \Illuminate\Http\Response
-     */
+    
     public function update(Request $request, $id)
     {
         //
         $tipo_promocion = tipo_promocion::find($id);
 
-        if(is_null($marca)){
+        if(is_null($tipo_promocion)){
             return response()->json(['message' => 'Tipo de promoción no encontrado'], 404);
         }
         $validateData = $request->validate([
@@ -92,7 +81,7 @@ class TipoPromocionController extends Controller
         //
         $tipo_promocion = tipo_promocion::find($id);
 
-        if(is_null($marca)){
+        if(is_null($tipo_promocion)){
             return response()->json(['message' => 'Tipo de promoción no encontrado'], 404);
         }
         

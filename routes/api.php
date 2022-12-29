@@ -74,6 +74,8 @@ Route::resource('marca', MarcaController::class);
 
 Route::resource('tipo-promocion', TipoPromocionController::class);
 
+//obtener el producto por su categoria 
+Route::get('showProductoCategoria/{id}',[ProductoController::class,'showProductoCategoria']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
