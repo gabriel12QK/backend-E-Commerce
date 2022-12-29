@@ -51,6 +51,7 @@ Route::post('/edit-precio/{id}',[ ProductoController::class,'editPrecio']);
 Route::post('/edit-stock/{id}',[ ProductoController::class,'editStock']);
 Route::post('/edit-imagen/{id}',[ ProductoController::class,'editImagen']);
 Route::get('showProducto/{id}',[ProductoController::class,'showProducto']);
+Route::get('showProductoMarca/{id}',[ProductoController::class,'showProductoMarca']);
 
 //venta
 Route::resource('venta', VentaController::class);
@@ -64,6 +65,7 @@ Route::resource('categoria', CategoriaController::class);
 
 //promocion producto
 Route::resource('promocion-producto',PromocionProductoController::class);
+Route::get('showPromocion/{id}',[PromocionProductoController::class,'showPromocionProducto']);
 
 //marca
 Route::resource('marca', MarcaController::class);

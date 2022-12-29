@@ -217,4 +217,20 @@ class ProductoController extends Controller
         }
         return response()->json($producto,200);
     }
+
+
+
+    public function showProductoMarca($id)
+    {
+        $producto=DB::table('productos')
+        ->join('marcas','productos.id_marca','=','marcas.id')
+        ->select('productos.*','marcas.descripcion')
+        ->where('productos.id_marca',$id)
+        ->where('productos.estado',1)
+        ->get();
+        if (count($producto)==0) {
+           return response()->json(['message'=> "No hay productos registrados en esta marca"],404);
+        }
+        return response()->json($producto);
+    }
 }

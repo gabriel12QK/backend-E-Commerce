@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\promocion_producto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Collection;
 
 class PromocionProductoController extends Controller
 {
@@ -126,5 +129,16 @@ class PromocionProductoController extends Controller
         $promocion->estado=0;
         $promocion->save();
         return response()->json(['message'=>'promocion actualizada'],200);
+    }
+
+
+    public function showPromocionProducto($id){
+     $promocion=DB::table('promocion_productos')
+     ->join('productos','promocion_productos.id_producto','=','productos.id')
+     ->select('productos.*','promocion_productos.descuento','promocion_productos.stock','promocion_productos.fecha_inicio','promocion_productos.fecha_fin')
+     ->where('promocion_productos.id',$id)
+     ->where('promocion_productos.estado',1)
+     ->get();
+        return response()->json($promocion);
     }
 }
