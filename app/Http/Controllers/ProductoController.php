@@ -236,7 +236,9 @@ class ProductoController extends Controller
     {
         $producto=DB::table('productos')
         ->join('marcas','productos.id_marca','=','marcas.id')
-        ->select('productos.*','marcas.descripcion')
+        ->join('categorias','productos.id_categoria','=','categorias.id')
+        ->join('tipo_pesos','productos.id_tipo_peso','=','tipo_pesos.id')
+        ->select('productos.*','marcas.descripcion','categorias.descripcion as categoria','tipo_pesos.descripcion as tipoPeso')
         ->where('productos.id_marca',$id)
         ->where('productos.estado',1)
         ->get();
