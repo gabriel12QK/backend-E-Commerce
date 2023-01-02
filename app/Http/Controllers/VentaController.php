@@ -154,4 +154,88 @@ class VentaController extends Controller
     
         return response()->json($dataVenta);
     }
+
+
+
+    public function showVentaPersona($id){
+        $dataVenta=Array();
+        $dataProductos=Array();
+        $datakit=Array();
+        $data=Array();
+        $venta= DB::table('ventas')
+        ->join('users','ventas.id_user', '=','users.id')
+        ->join('tipo_pagos','ventas.id_tipo_pago','=','tipo_pagos.id')
+        ->select('ventas.id','ventas.subtotal','ventas.total','ventas.fecha',
+        'users.name','users.last_name','users.cedula','users.id as userId',
+        'tipo_pagos.descripcion as tipo_pago')
+        ->groupBy('ventas.id','ventas.subtotal','ventas.total','ventas.fecha',
+        'users.name','users.last_name','users.cedula','users.id',
+        'tipo_pagos.descripcion')
+        ->where('ventas.estado',1)
+        ->where('ventas.id_user',$id)
+        ->get();
+
+            if (count($venta)==0) {
+                return response()->json(['message'=> "No se envuentran registro de pedidos"],404);
+            }
+        foreach ($venta as $key => $i) {
+
+            $detalle= DB::table('detalle_ventas')
+              ->join('ventas','detalle_ventas.id_venta','=','ventas.id')
+              ->select('ventas.*','detalle_ventas.precio','detalle_ventas.cantidad','detalle_ventas.id_producto','detalle_ventas.id_promocion_producto','detalle_ventas.id_registro_promocion',)
+              ->where('ventas.estado',1)
+              ->where('detalle_ventas.id_venta',$i->id)
+              ->get();
+             
+           
+           foreach ($detalle as $key => $value) 
+           {
+                     if ($value->id_producto!=null) {
+                                   $detalleVentaProducto=DB::table('detalle_ventas')
+                                   ->join('ventas','detalle_ventas.id_venta','=','ventas.id')
+                                    ->join('productos','detalle_ventas.id_producto','=','productos.id')
+                                    ->select('productos.nombre as nombreArticulo', 'productos.precio','detalle_ventas.cantidad')
+                                    ->where('detalle_ventas.id_venta',$value->id)
+                                    ->get();
+                                        array_push($data,['Articulo'=>$detalleVentaProducto]);
+                                        } 
+                    else if ($value->id_registro_promocion!=null) {
+                             $detalleVentaKit=DB::table('detalle_ventas')
+                             ->join('registro_promocions','detalle_ventas.id_registro_promocion','=','registro_promocions.id')
+                              ->join('precio_kits','registro_promocions.id','=','precio_kits.id_registro_promocion')
+                              ->join('tipo_promocions','registro_promocions.id_tipo_promocion','=','tipo_promocions.id')
+                              ->join('kits','registro_promocions.id','=','kits.id')
+                              ->select('registro_promocions.*','tipo_promocions.descripcion as tipoDescripcion','kits.id as kitId','precio_kits.precio as precioKit')
+                             ->where('registro_promocions.estado',1)
+                              ->get();
+                              $kits=DB::table('kits')
+                                ->join('productos','kits.id_producto','=','productos.id')
+                                ->join('tipo_pesos','productos.id_tipo_peso','=','tipo_pesos.id')
+                                ->select('kits.cantidad','productos.nombre','productos.peso','tipo_pesos.descripcion')
+                                ->where('id_registro_promocion',$value->id_registro_promocion)
+                                ->get();
+                                foreach ($detalleVentaKit as $key => $value1) {
+                                    array_push($datakit,['venta'=>$value1->descripcion,'nombreArticulo'=>$value1->tipoDescripcion,'precioKit'=>$value1->precioKit,'cantidadRestante'=>$value1->cantidad_restante,'subtotal'=>$value->subtotal,'total'=>$value->total,'cantidad'=>$value->cantidad,'fechaVenta'=>$value->fecha,'contenidoKit'=>$kits]);
+                                }
+                                     array_push($data,['Articulo'=>$datakit]);
+                            
+                    }
+                    else if ($value->id_promocion_producto) {
+                            $detalleVentaPromocion=DB::table('detalle_ventas')
+                            ->join('ventas','detalle_ventas.id_venta','=','ventas.id')
+                            ->join('promocion_productos','detalle_ventas.id_promocion_producto','=','promocion_productos.id')
+                            ->join('productos','promocion_productos.id_producto','=','productos.id')
+                            ->select('productos.nombre as nombreArticulo', 'productos.precio','detalle_ventas.cantidad','promocion_productos.descuento')
+                            ->where('detalle_ventas.id_venta',$value->id)
+                            ->get();
+                            array_push($data,['Articulo'=>$detalleVentaProducto]);
+                    
+                    }
+            }        
+        array_push($dataVenta,['nombreComprador'=>$i->name,'apellidoComprador'=>$i->last_name,'ventaId'=>$i->id, 'subtotal'=>$i->subtotal,'total'=>$i->total,'detalleVenta'=>$data]);
+        }
+           
+        return response()->json($dataVenta);
+      
+    }
 }

@@ -56,6 +56,7 @@ Route::get('showProductoMarca/{id}',[ProductoController::class,'showProductoMarc
 //venta
 Route::resource('venta', VentaController::class);
 Route::get('/show-venta', [VentaController::class, 'ShowVenta']);
+Route::get('/show-ventaPersona/{id}', [VentaController::class, 'showVentaPersona']);
 
 //tipo peso
 Route::resource('tipo_peso', TipoPesoController::class);
