@@ -7,11 +7,7 @@ use Illuminate\Http\Request;
 
 class CategoriaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
         $categoria = categoria::where('estado',1)->get();
@@ -60,7 +56,7 @@ class CategoriaController extends Controller
     
     public function edit(categoria $categoria)
     {
-        //
+        //no se usa
     }
 
 
