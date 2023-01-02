@@ -7,52 +7,40 @@ use Illuminate\Http\Request;
 
 class MarcaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
         $marca = marca::where('estado',1)->get();
         return response()->json($marca, 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function create()
     {
-       
+       //a
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request)
     {
         $validateData=$request->validate([
-            'descripcion'=>'required|string|max:255'
+            'descripcion'=>'required|string|max:255',
+            'imagen' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+        //imagen
+        $img = $request->file('imagen');
+        $valiData['imagen'] =  time().'.'.$img->getClientOriginalExtension();
         $marca=marca::create([
             'descripcion'=>$validateData['descripcion'],
+            'imagen'=>$valiData['imagen'],
             'estado'=>1,
         ]);
 
+        $request->file('imagen')->storeAs("public/images/marca/{$marca->id}", $valiData['imagen']);
         return response()->json(['message'=>'Marca registrada'], 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\marca  $marca
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show($id)
     {
         $marca=marca::find($id);
@@ -62,35 +50,30 @@ class MarcaController extends Controller
         return response()->json($marca);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\marca  $marca
-     * @return \Illuminate\Http\Response
-     */
     public function edit(marca $marca)
     {
-        //
+        //a
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\marca  $marca
-     * @return \Illuminate\Http\Response
-     */
+    
     public function update(Request $request, marca $marca)
     {
         //
+        $marca = marca::find($id);
+        if (is_null($marca)) {
+            return response()->json(['message' => 'Marca no encontrada.'], 404);
+        }
+        $validateData = $request->validate([
+            'descripcion'=>'required|string|max:255'
+        ]);
+
+        $marca->descripcion = $validateData['descripcion'];
+        $marca->save();
+
+        return response()->json(['message' => 'Marca actualizada'], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\marca  $marca
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy($id)
     {
         $marca=marca::find($id);
@@ -99,6 +82,27 @@ class MarcaController extends Controller
         }
         $marca->estado = 0;
         $marca->save();
-        return response()->json(['message'=>'marca eliminada']);
+        return response()->json(['message'=>'Marca eliminada']);
     }
+
+    public function editImagen(Request $request, $id ){
+
+        $marca = marca::find($id);
+        if (is_null($marca)) {
+            return response()->json(['message' => 'marca no encontrada.'], 404);
+        }
+        $validateData = $request->validate([
+            'imagen' => 'required|mimes:jpeg,bmp,png',
+        ]);
+        $img=$request->file('imagen');
+        $validateData['imagen'] = time().'.'.$img->getClientOriginalExtension();
+        $request->file('imagen')->storeAs("public/images/cate$marca/{$marca->id}", $validateData['imagen']);
+        $marca->imagen=$validateData['imagen'];
+        $marca->save();
+        return response()->json(['message' => 'Foto de marca actualizada'], 201);
+    }
+
+
+
+
 }

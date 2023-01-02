@@ -16,22 +16,27 @@ class Marcas extends Seeder
     {
         marca::create([
             'descripcion'=>'Coca-Cola',
+            'imagen'=>'imagen_default.jpg',
             'estado'=>1
         ]);
         marca::create([
             'descripcion'=>'Colgate',
+            'imagen'=>'imagen_default.jpg',
             'estado'=>1
         ]);
         marca::create([
             'descripcion'=>'Pepsi',
+            'imagen'=>'imagen_default.jpg',
             'estado'=>1
         ]);
         marca::create([
             'descripcion'=>'Familia',
+            'imagen'=>'imagen_default.jpg',
             'estado'=>1
         ]);
         marca::create([
             'descripcion'=>'Oreo',
+            'imagen'=>'imagen_default.jpg',
             'estado'=>1
         ]);
 
