@@ -18,41 +18,36 @@ class CategoriaController extends Controller
         return response()->json($categoria, 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
-        //
+        //solo dios sabe que hace esto
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request)
     {
         $validateData=$request->validate([
-            'descripcion'=>'required|string|max:255'
+            'descripcion'=>'required|string|max:255',
+            'imagen' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+        //imagen
+        $img = $request->file('imagen');
+        $valiData['imagen'] =  time().'.'.$img->getClientOriginalExtension();
+
+
         $categoria=categoria::create([
             'descripcion'=>$validateData['descripcion'],
+            'imagen'=>$valiData['imagen'],
             'estado'=>1,
         ]);
+
+        $request->file('imagen')->storeAs("public/images/categoria/{$categoria->id}", $valiData['imagen']);
 
         return response()->json(['message'=>'Categoria registrada'],200);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\categoria  $categoria
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show($id)
     {
         $categoria=categoria::find($id);
@@ -62,35 +57,32 @@ class CategoriaController extends Controller
         return response()->json($categoria);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\categoria  $categoria
-     * @return \Illuminate\Http\Response
-     */
+    
     public function edit(categoria $categoria)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\categoria  $categoria
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, categoria $categoria)
     {
         //
+        $categoria = categoria::find($id);
+        if (is_null($categoria)) {
+            return response()->json(['message' => 'Categoria no encontrada.'], 404);
+        }
+        $validateData = $request->validate([
+            'descripcion'=>'required|string|max:255'
+        ]);
+
+        $categoria->descripcion = $validateData['descripcion'];
+        $categoria->save();
+
+        return response()->json(['message' => 'Categoria actualizada'], 200);
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\categoria  $categoria
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy($id)
     {
         $categoria=categoria::find($id);
@@ -101,4 +93,24 @@ class CategoriaController extends Controller
         $categoria->save();
         return response()->json(['message'=>'Categoria eliminada']);
     }
+
+    public function editImagen(Request $request, $id ){
+
+        $categoria = categoria::find($id);
+        if (is_null($categoria)) {
+            return response()->json(['message' => 'Categoria no encontrada.'], 404);
+        }
+        $validateData = $request->validate([
+            'imagen' => 'required|mimes:jpeg,bmp,png',
+        ]);
+        $img=$request->file('imagen');
+        $validateData['imagen'] = time().'.'.$img->getClientOriginalExtension();
+        $request->file('imagen')->storeAs("public/images/cate$categoria/{$categoria->id}", $validateData['imagen']);
+        $categoria->imagen=$validateData['imagen'];
+        $categoria->save();
+        return response()->json(['message' => 'Foto de categoria actualizada'], 201);
+    }
+
+
+
 }

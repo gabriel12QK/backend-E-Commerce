@@ -11,6 +11,7 @@ class categoria extends Model
     public $timestamps = false;
     protected $fillable = [
         'descripcion',
+        'imagen',
         'estado',
     ];
 }
