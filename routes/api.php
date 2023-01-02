@@ -52,6 +52,7 @@ Route::post('/edit-stock/{id}',[ ProductoController::class,'editStock']);
 Route::post('/edit-imagen/{id}',[ ProductoController::class,'editImagen']);
 Route::get('showProducto/{id}',[ProductoController::class,'showProducto']);
 Route::get('showProductoMarca/{id}',[ProductoController::class,'showProductoMarca']);
+Route::get('showProductoCategoria/{id}',[ProductoController::class,'showProductoCategoria']);
 
 //venta
 Route::resource('venta', VentaController::class);
@@ -62,20 +63,19 @@ Route::resource('tipo_peso', TipoPesoController::class);
 
 //categoria
 Route::resource('categoria', CategoriaController::class);
+Route::post('edit-img-categoria/{id}', [CategoriaController::class, 'editImagen']);
 
 //promocion producto
-Route::resource('promocion-producto',PromocionProductoController::class);
+Route::resource('promocion-producto', PromocionProductoController::class);
 Route::get('showPromocion/{id}',[PromocionProductoController::class,'showPromocionProducto']);
 
 //marca
 Route::resource('marca', MarcaController::class);
+Route::post('edit-img-marca/{id}', [MarcaController::class, 'editImagen']);
 
 //tipo promocion
-
 Route::resource('tipo-promocion', TipoPromocionController::class);
 
-//obtener el producto por su categoria 
-Route::get('showProductoCategoria/{id}',[ProductoController::class,'showProductoCategoria']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
