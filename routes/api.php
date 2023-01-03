@@ -12,6 +12,7 @@ use App\Http\Controllers\VentaController;
 use App\Http\Controllers\TipoPesoController;
 use App\Http\Controllers\RegistroPromocionController;
 use App\Http\Controllers\TipoPromocionController;
+use App\Http\Controllers\KitController;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,3 +81,5 @@ Route::get('showProductoCategoria/{id}',[ProductoController::class,'showProducto
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('/showOfertasKits', [KitController::class,'showOfertasKits']);
+
