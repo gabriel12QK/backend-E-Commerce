@@ -126,16 +126,18 @@ class KitController extends Controller
     public function showOfertaskits()
     {
         $data=Array();
-        $promo=DB::table('kits')
+        $promo=DB::table('registro_promocions')
        // ->join('nombre_tabla','campo a comparar de la tabla principal','=','')
-        ->join('registro_promocions','kits.id_registro_promocion','=','registro_promocions.id')
+       // ->join ('productos','kits.id_producto','=','productos.id')
+        //->join('registro_promocions','kits.id_registro_promocion','=','registro_promocions.id')
         ->join('precio_kits','registro_promocions.id','=','precio_kits.id_registro_promocion')
         ->select('registro_promocions.*','precio_kits.precio as precioKit')
         ->where('registro_promocions.estado',1)
+        ->where('precio_kits.estado',1)
         ->get();
 
         
       
-        return response()->json($promo);
+        return response()->json($promo, 200);
     }
 }
