@@ -70,6 +70,7 @@ Route::post('edit-img-categoria/{id}', [CategoriaController::class, 'editImagen'
 //promocion producto
 Route::resource('promocion-producto', PromocionProductoController::class);
 Route::get('showPromocion/{id}',[PromocionProductoController::class,'showPromocionProducto']);
+Route::get('indexPromocion',[PromocionProductoController::class,'PromocionProducto']);
 
 //marca
 Route::resource('marca', MarcaController::class);
