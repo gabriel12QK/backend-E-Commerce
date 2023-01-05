@@ -106,7 +106,7 @@ class RegistroPromocionController extends Controller
         ->where('id_registro_promocion',$id)
         ->get();
         foreach ($promo as $key => $value) {
-            array_push($data,['nombreusuar'=>$value->descripcion,'tipoPromocion'=>$value->tipoDescripcion,'precioKit'=>$value->precioKit,'cantidadRestante'=>$value->cantidad_restante,'contenidoKit'=>$kits]);
+            array_push($data,['nombre'=>$value->descripcion,'tipoPromocion'=>$value->tipoDescripcion,'precioKit'=>$value->precioKit,'cantidadRestante'=>$value->cantidad_restante,'contenidoKit'=>$kits]);
         }
       
         return response()->json($data);
