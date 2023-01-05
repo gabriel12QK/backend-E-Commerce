@@ -98,7 +98,8 @@ class VentaController extends Controller
         ->join('tipo_pagos','ventas.id_tipo_pago','=','tipo_pagos.id')
         ->select('ventas.*',
         'users.name','users.last_name','users.cedula','users.id as userId',
-        'detalle_ventas.precio','detalle_ventas.cantidad','detalle_ventas.id_producto','detalle_ventas.id_promocion_producto','detalle_ventas.id_registro_promocion',
+        'detalle_ventas.precio','detalle_ventas.cantidad','detalle_ventas.id_producto','detalle_ventas.id_promocion_producto',
+        'detalle_ventas.id_registro_promocion',
         'tipo_pagos.descripcion as tipo_pago'
         )
         ->where('ventas.estado',1)
@@ -113,7 +114,9 @@ class VentaController extends Controller
                         ->where('detalle_ventas.id_venta',$value->id)
                         ->where('ventas.id_user',$value->userId)
                         ->get();
-                       array_push($dataVenta,['nombreComprador'=>$value->name,'apellidoComprador'=>$value->last_name,'ventaId'=>$value->id, 'subtotal'=>$value->subtotal,'total'=>$value->total,'cantidad'=>$value->cantidad,'fechaVenta'=>$value->fecha ,'Articulo'=>$detalleVentaProducto,]);
+                       array_push($dataVenta,['nombreComprador'=>$value->name,'apellidoComprador'=>$value->last_name,'ventaId'=>$value->id,
+                       'subtotal'=>$value->subtotal,'total'=>$value->total,'cantidad'=>$value->cantidad,
+                       'fechaVenta'=>$value->fecha ,'Articulo'=>$detalleVentaProducto,]);
                             } 
         else if ($value->id_registro_promocion!=null) {
                  $detalleVentaKit=DB::table('detalle_ventas')
@@ -132,9 +135,12 @@ class VentaController extends Controller
                     ->where('id_registro_promocion',$value->id_registro_promocion)
                     ->get();
                     foreach ($detalleVentaKit as $key => $value1) {
-                        array_push($datakit,['venta'=>$value1->descripcion,'nombreArticulo'=>$value1->tipoDescripcion,'precioKit'=>$value1->precioKit,'cantidadRestante'=>$value1->cantidad_restante,'subtotal'=>$value->subtotal,'total'=>$value->total,'cantidad'=>$value->cantidad,'fechaVenta'=>$value->fecha,'contenidoKit'=>$kits]);
+                        array_push($datakit,['venta'=>$value1->descripcion,'nombreArticulo'=>$value1->tipoDescripcion,'precioKit'=>$value1->precioKit,
+                        'cantidadRestante'=>$value1->cantidad_restante,'subtotal'=>$value->subtotal,'total'=>$value->total,'cantidad'=>$value->cantidad,
+                        'fechaVenta'=>$value->fecha,'contenidoKit'=>$kits]);
                     }
-                    array_push($dataVenta,['nombreComprador'=>$value->name,'apellidoComprador'=>$value->last_name,'ventaId'=>$value->id,'cantidad'=>$value->cantidad,'fechaVenta'=>$value->fecha,'subtotal'=>$value->subtotal,'total'=>$value->total,'Articulo'=>$datakit,]);
+                    array_push($dataVenta,['nombreComprador'=>$value->name,'apellidoComprador'=>$value->last_name,'ventaId'=>$value->id,
+                    'cantidad'=>$value->cantidad,'fechaVenta'=>$value->fecha,'subtotal'=>$value->subtotal,'total'=>$value->total,'Articulo'=>$datakit,]);
                    
         }
         else if ($value->id_promocion_producto) {
