@@ -15,22 +15,25 @@ class TipoPesos extends Seeder
     public function run()
     {
         tipo_peso::create([
-            'descripcion'=>"Gramo"
+            'descripcion'=>"gr"
         ]);
         tipo_peso::create([
-            'descripcion'=>"Kilogramo"
+            'descripcion'=>"kg"
         ]);
         tipo_peso::create([
-            'descripcion'=>"Libras"
+            'descripcion'=>"lb"
         ]);
         tipo_peso::create([
-            'descripcion'=>"Litros"
+            'descripcion'=>"lt"
         ]);
         tipo_peso::create([
-            'descripcion'=>"Mililitros"
+            'descripcion'=>"ml"
         ]);
         tipo_peso::create([
-            'descripcion'=>"Galones"
+            'descripcion'=>"gal"
+        ]);
+        tipo_peso::create([
+            'descripcion'=>"cc"
         ]);
     }
 }
