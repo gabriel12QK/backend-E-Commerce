@@ -133,20 +133,24 @@ class PromocionProductoController extends Controller
 
 
     public function showPromocionProducto($id){
-     $promocion=DB::table('promocion_productos')
-     ->join('productos','promocion_productos.id_producto','=','productos.id')
-     ->select('productos.*','promocion_productos.descuento','promocion_productos.stock','promocion_productos.fecha_inicio','promocion_productos.fecha_fin')
-     ->where('promocion_productos.id',$id)
-     ->where('promocion_productos.estado',1)
-     ->get();
+        $promocion=DB::table('promocion_productos')
+        ->join('productos','promocion_productos.id_producto','=','productos.id')
+        ->join('precio_promocion_productos', 'precio_promocion_productos.id_promocion_producto', '=', 'promocion_productos.id')
+        ->select('productos.*','promocion_productos.descuento','promocion_productos.stock','promocion_productos.fecha_inicio','promocion_productos.fecha_fin', 'precio_promocion_productos.precio as precioPromo')
+        ->where('promocion_productos.id',$id)
+        ->where('promocion_productos.estado',1)
+        ->get();
+
         return response()->json($promocion);
     }
     public function PromocionProducto(){
         $promocion=DB::table('promocion_productos')
         ->join('productos','promocion_productos.id_producto','=','productos.id')
-        ->select('productos.*','promocion_productos.descuento','promocion_productos.stock','promocion_productos.fecha_inicio','promocion_productos.fecha_fin')
+        ->join('precio_promocion_productos', 'precio_promocion_productos.id_promocion_producto', '=', 'promocion_productos.id')
+        ->select('productos.*','promocion_productos.descuento','promocion_productos.stock','promocion_productos.fecha_inicio','promocion_productos.fecha_fin', 'precio_promocion_productos.precio as precioPromo')
         ->where('promocion_productos.estado',1)
         ->get();
-           return response()->json($promocion);
-       }
+
+        return response()->json($promocion);
+    }
 }
