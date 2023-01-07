@@ -60,7 +60,7 @@ class CategoriaController extends Controller
     }
 
 
-    public function update(Request $request, categoria $categoria)
+    public function update(Request $request, $id)
     {
         //
         $categoria = categoria::find($id);

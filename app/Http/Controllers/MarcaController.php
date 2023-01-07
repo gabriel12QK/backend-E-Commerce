@@ -56,7 +56,7 @@ class MarcaController extends Controller
     }
 
     
-    public function update(Request $request, marca $marca)
+    public function update(Request $request, $id)
     {
         //
         $marca = marca::find($id);
