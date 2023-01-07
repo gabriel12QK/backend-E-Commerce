@@ -144,7 +144,7 @@ class PromocionProductoController extends Controller
         ->join('marcas','productos.id_marca','=','marcas.id')
         ->join('tipo_pesos','productos.id_tipo_peso','=','tipo_pesos.id')
         ->join('categorias','productos.id_categoria','=','categorias.id')
-        ->select('productos.*','promocion_productos.descuento','promocion_productos.stock','promocion_productos.fecha_inicio','promocion_productos.fecha_fin', 'precio_promocion_productos.precio as precioPromo', 'marcas.descripcion as marca','tipo_pesos.descripcion as tipo_peso','categorias.descripcion as categoria')
+        ->select('productos.*','promocion_productos.descuento','promocion_productos.stock as stockPromo','promocion_productos.fecha_inicio','promocion_productos.fecha_fin', 'precio_promocion_productos.precio as precioPromo', 'marcas.descripcion as marca','tipo_pesos.descripcion as tipo_peso','categorias.descripcion as categoria')
         ->where('promocion_productos.id',$id)
         ->where('promocion_productos.estado',1)
         ->get();
@@ -158,7 +158,7 @@ class PromocionProductoController extends Controller
         ->join('tipo_pesos','productos.id_tipo_peso','=','tipo_pesos.id')
         ->join('categorias','productos.id_categoria','=','categorias.id')
         ->join('precio_promocion_productos', 'precio_promocion_productos.id_promocion_producto', '=', 'promocion_productos.id')
-        ->select('productos.*','promocion_productos.descuento','promocion_productos.stock','promocion_productos.fecha_inicio','promocion_productos.fecha_fin', 'precio_promocion_productos.precio as precioPromo', 'marcas.descripcion as marca','tipo_pesos.descripcion as tipo_peso','categorias.descripcion as categoria')
+        ->select('productos.*','promocion_productos.descuento','promocion_productos.stock as stockPromo','promocion_productos.fecha_inicio','promocion_productos.fecha_fin', 'precio_promocion_productos.precio as precioPromo', 'marcas.descripcion as marca','tipo_pesos.descripcion as tipo_peso','categorias.descripcion as categoria')
         ->where('promocion_productos.estado',1)
         ->get();
 
