@@ -19,6 +19,8 @@ class PromocionProductoController extends Controller
     {
         $promocion=promocion_producto::where('estado',1)->get();
         return response()->json($promocion);
+
+        /* esta consulta esta incompleta */
     }
 
     /**
@@ -151,6 +153,8 @@ class PromocionProductoController extends Controller
 
         return response()->json($promocion);
     }
+
+
     public function PromocionProducto(){
         $promocion=DB::table('promocion_productos')
         ->join('productos','promocion_productos.id_producto','=','productos.id')
