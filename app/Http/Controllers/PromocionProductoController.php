@@ -146,7 +146,11 @@ class PromocionProductoController extends Controller
         ->join('marcas','productos.id_marca','=','marcas.id')
         ->join('tipo_pesos','productos.id_tipo_peso','=','tipo_pesos.id')
         ->join('categorias','productos.id_categoria','=','categorias.id')
-        ->select('productos.*','promocion_productos.descuento','promocion_productos.stock as stockPromo','promocion_productos.fecha_inicio','promocion_productos.fecha_fin', 'precio_promocion_productos.precio as precioPromo', 'marcas.descripcion as marca','tipo_pesos.descripcion as tipo_peso','categorias.descripcion as categoria')
+        ->select('promocion_productos.id','promocion_productos.descuento','promocion_productos.stock as stockPromo',
+        'promocion_productos.fecha_inicio','promocion_productos.fecha_fin', 'precio_promocion_productos.precio as precioPromo', 
+        'productos.id as id_producto', 'productos.nombre', 'productos.precio', 'productos.peso', 'productos.stock', 'productos.imagen', 
+        'productos.id_categoria', 'productos.id_marca', 'productos.id_tipo_peso', 'marcas.descripcion as marca',
+        'tipo_pesos.descripcion as tipo_peso','categorias.descripcion as categoria')
         ->where('promocion_productos.id',$id)
         ->where('promocion_productos.estado',1)
         ->get();
@@ -156,13 +160,17 @@ class PromocionProductoController extends Controller
 
 
     public function PromocionProducto(){
-        $promocion=DB::table('promocion_productos')
+        $promocion = DB::table('promocion_productos')
         ->join('productos','promocion_productos.id_producto','=','productos.id')
         ->join('marcas','productos.id_marca','=','marcas.id')
         ->join('tipo_pesos','productos.id_tipo_peso','=','tipo_pesos.id')
         ->join('categorias','productos.id_categoria','=','categorias.id')
         ->join('precio_promocion_productos', 'precio_promocion_productos.id_promocion_producto', '=', 'promocion_productos.id')
-        ->select('productos.*','promocion_productos.descuento','promocion_productos.stock as stockPromo','promocion_productos.fecha_inicio','promocion_productos.fecha_fin', 'precio_promocion_productos.precio as precioPromo', 'marcas.descripcion as marca','tipo_pesos.descripcion as tipo_peso','categorias.descripcion as categoria')
+        ->select('promocion_productos.id','promocion_productos.descuento','promocion_productos.stock as stockPromo',
+        'promocion_productos.fecha_inicio','promocion_productos.fecha_fin', 'precio_promocion_productos.precio as precioPromo', 
+        'productos.id as id_producto', 'productos.nombre', 'productos.precio', 'productos.peso', 'productos.stock', 'productos.imagen', 
+        'productos.id_categoria', 'productos.id_marca', 'productos.id_tipo_peso', 'marcas.descripcion as marca',
+        'tipo_pesos.descripcion as tipo_peso','categorias.descripcion as categoria')
         ->where('promocion_productos.estado',1)
         ->get();
 
